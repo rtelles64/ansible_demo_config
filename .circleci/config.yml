@@ -10,7 +10,7 @@ jobs:
           # You can get this ID in the section where you
           # registered the SSH Key or in the
           # Project settings > SSH Keys section
-          fingerprints: ["87:40:95:84:7d:d8:e7:9a:73:75:49:e4:2a:45:30:33"]
+          fingerprints: ["1a:c3:53:27:fc:08:1d:b5:c8:92:e0:ac:be:33:64:80"]
       - run:
           name: Install dependencies
           # install the dependencies needed for your playbook
@@ -19,7 +19,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ansible-playbook -i inventory.txt main-remote.yml --private-key ~/Downloads/udacity-devops-default.pem
+            ansible-playbook -i inventory.txt main-remote.yml
 
 workflows:
   my_workflow:
