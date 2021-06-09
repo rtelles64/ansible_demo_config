@@ -1,0 +1,28 @@
+version: 2.1
+
+jobs:
+  configure_infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          # You can get this ID in the section where you
+          # registered the SSH Key or in the
+          # Project settings > SSH Keys section
+          fingerprints:
+["06:7c:db:71:49:2f:03:36:60:08:d2:fd:33:6f:17:d3"]
+      - run:
+          name: Install dependencies
+          # install the dependencies needed for your playbook
+          command: |
+            apk add --update ansible
+      - run:
+          name: Configure server
+          command: |
+            ansible-playbook -i inventory.txt main-remote.yml
+
+workflows:
+  my_workflow:
+    jobs:
+      - configure_infrastructure
