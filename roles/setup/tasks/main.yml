@@ -1,0 +1,57 @@
+---
+- name: "update apt packages"
+  become: true
+  become_method: sudo
+  apt:
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: true
+  apt:
+    upgrade: yes
+
+- name: "remove dependencies that are no longer required"
+  become: true
+  apt:
+    autoremove: yes
+
+- name: "install dependencies"
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
+
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+
+- name: "install apache2"
+  # Upgrade to sudo
+  become: true
+  # Use the apt command
+  apt:
+    # Call the apache2 package
+    name: ["apache2"]
+    # Get the latest version
+    state: latest
+    # Update cache in case it's changed
+    update_cache: yes
+
+- name: "Create working directory"
+  file:
+    path: ~/web
+    state: directory
+
+- name: "Copy index test page"
+  template:
+    src: "files/index.js"
+    dest: "~/web/index.js"
+
+- name: "Executing node"
+  shell: |
+    pm2 start ~/web/index.js -f
